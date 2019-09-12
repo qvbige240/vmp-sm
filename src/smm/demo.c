@@ -102,7 +102,7 @@ onion_connection_status ask_handler(void *none, onion_request *req,
 /**
  * @short In a simple loop asks the user for the answer of the query.
  */
-int main(int argc, char **argv) {
+int main_test(int argc, char **argv) {
   onion *server;
 
   //server = onion_new(O_ONE_LOOP);

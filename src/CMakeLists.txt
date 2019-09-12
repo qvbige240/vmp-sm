@@ -18,12 +18,10 @@ vmp/vmp_typedef.h
 SET(SMM_INCLUDES smm.h smm_typedef.h smm_core.h vmp/vmp.h vmp/vmp_log.h vmp/vmp_typedef.h)
 MESSAGE(STATUS "FOUND include files ${SMM_INCLUDES}")
 
-
 add_library(smp STATIC ${SMM_SOURCES})
 
 if (${ZLOG_ENABLED})
 target_link_libraries(smp ${ZLOG_LIBRARIES})
-MESSAGE(STATUS "target_link_libraries ${ZLOG_LIBRARIES}")
 endif (${ZLOG_ENABLED})
 
 

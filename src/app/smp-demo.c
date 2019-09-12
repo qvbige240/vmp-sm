@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     my_zlog_init(PROCESS_APP);
 
     fprintf(stdout, "\n****************************** ******************************\n");
-    fprintf(stdout, "*             vmp-sm demo starting...                     *\n");
+    fprintf(stdout, "*             vmp-sm demo starting...                       *\n");
     fprintf(stdout, "*             version %s                                  *", SW_VERSION);
     fprintf(stdout, "\n****************************** ******************************\n\n\n");
 

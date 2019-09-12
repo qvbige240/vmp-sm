@@ -16,6 +16,7 @@ typedef struct _PrivInfo
     pthread_mutex_t     core_mutex;
 } PrivInfo;
 
+extern int main_test(int argc, char **argv);
 
 void smm_core_done(void);
 
@@ -24,6 +25,8 @@ static void *smm_core_thread(void *arg)
     PrivInfo *thiz = (PrivInfo *)arg;
 
     VMP_LOGD("core test");
+
+    main_test(0, NULL);
 
     while (thiz->cond)
     {

@@ -26,5 +26,3 @@ endif (${ZLOG_ENABLED})
 
 
 install(FILES ${SMM_INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
-
-add_subdirectory(app)

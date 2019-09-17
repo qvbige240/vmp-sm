@@ -10,6 +10,8 @@
 
 #include "smm_typedef.h"
 
+#include "smm_demo.h"
+
 VMP_BEGIN_DELS
 
 void smm_core_init(void);

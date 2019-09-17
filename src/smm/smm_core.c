@@ -9,16 +9,54 @@
 
 #include "smm_core.h"
 
+#include "web_server.h"
+
 typedef struct _PrivInfo
 {
     int                 cond;
     pthread_t           core_thread;
     pthread_mutex_t     core_mutex;
+
+    void                *web_server;
+    void                *web_demo;
 } PrivInfo;
 
 extern int main_test(int argc, char **argv);
 
 void smm_core_done(void);
+
+/** web demo **/
+static void task_web_demo(PrivInfo *thiz)
+{
+    SmmDemoReq req = {0};
+    req.web = thiz->web_server;
+    thiz->web_demo = smm_demo_create(thiz, &req);
+    if (thiz->web_demo)
+    {
+        smm_demo_start(thiz->web_demo);
+    }
+}
+
+/** web server **/
+static int api_register_func(void *p, int msg, void *arg)
+{
+    task_web_demo(p);
+
+    return 0;
+}
+static void task_web_server(PrivInfo *thiz)
+{
+    VMP_LOGD("web server start...");
+    WebServerReq req = {0};
+    req.port = 8080;
+    req.func = api_register_func;
+    req.ctx  = thiz;
+    thiz->web_server = web_server_create(thiz, &req);
+    if (thiz->web_server)
+    {
+        web_server_start(thiz->web_server);
+    }
+}
 
 static void *smm_core_thread(void *arg)
 {
@@ -26,13 +64,14 @@ static void *smm_core_thread(void *arg)
 
     VMP_LOGD("core test");
 
-    main_test(0, NULL);
+    //main_test(0, NULL);
+    task_web_server(thiz);
 
     while (thiz->cond)
     {
         sleep(5);
     }
-    
+
     return NULL;
 }
 

@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #ifdef HAVE_VPK
@@ -27,7 +28,7 @@
     #define VMP_BEGIN_DELS
     #define VMP_END_DELS
   #endif
-  
+
 #endif  //HAVE_VPK
 
 typedef int (*vmp_callback_func)(void *p, int msg, void *arg);

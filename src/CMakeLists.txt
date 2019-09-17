@@ -1,18 +1,29 @@
 
 include_directories (${PROJECT_SOURCE_DIR}/src/) 
 
-include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/vmp) 
+include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/vmp)
+include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/module/web)
 
 set(SMM_SOURCES
+module/web/api/api_node_info.h
+module/web/api/api_typedef.h
+module/web/web_handler.h
+module/web/web_node_info.c
+module/web/web_register.h
+module/web/web_server.c
+module/web/web_server.h
 smm/demo.c
 smm/smm.c
 smm/smm_core.c
 smm/smm_core.h
+smm/smm_demo.c
+smm/smm_demo.h
 smm/smm.h
 smm/smm_typedef.h
 vmp/vmp.h
 vmp/vmp_log.h
 vmp/vmp_typedef.h
+
 )
 
 SET(SMM_INCLUDES smm.h smm_typedef.h smm_core.h vmp/vmp.h vmp/vmp_log.h vmp/vmp_typedef.h)

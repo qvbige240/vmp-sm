@@ -12,6 +12,8 @@
 #include <onion/request.h>
 #include <onion/response.h>
 
+#include "jansson.h"
+
 #include "api/api_node_info.h"
 #include "web_server.h"
 #include "web_register.h"
@@ -51,6 +53,7 @@ param_parse_end:
     return -1;
 }
 
+#if 0
 static void response_json_create(PrivInfo *thiz)
 {
     const char *data = "{\"id\":\"1\",\"count\":10}";
@@ -60,6 +63,29 @@ static void response_json_create(PrivInfo *thiz)
     else
         VMP_LOGE("memory alloc failed: response_json_create");
 }
+#else
+static void response_json_create(PrivInfo *thiz)
+{
+    ApiNodeInfoRsp *rsp = &thiz->rsp;
+    json_t *json_root = json_object();
+
+    json_object_set_new(json_root, "id", json_integer(rsp->id));
+    json_object_set_new(json_root, "name", json_string(rsp->name));
+    json_object_set_new(json_root, "count", json_integer(rsp->count));
+
+    char *data_dump = json_dumps(json_root, 0);
+    VMP_LOGD("response node info:\n%s", data_dump);
+
+    thiz->data = calloc(1, strlen(data_dump) + 1);
+    if (thiz->data)
+        strcpy(thiz->data, data_dump);
+    else
+        VMP_LOGE("memory alloc failed: response_json_create");
+
+    free(data_dump);
+    json_decref(json_root);
+}
+#endif
 
 static int handle_node_info(void *p, onion_request *req, onion_response *res)
 {
@@ -89,7 +115,6 @@ static int handle_node_info(void *p, onion_request *req, onion_response *res)
     response_json_create(thiz);
     onion_response_write0(res, thiz->data);
 
-
     if (0)
     {
         const char *path = onion_request_get_path(req);
@@ -112,6 +137,5 @@ static int handle_node_info(void *p, onion_request *req, onion_response *res)
 
 int web_node_info_register(void *server, void *args)
 {
-    //return web_handler_register(server, WEB_URL_NODE_INFO, handle_node_info, args);
-    return web_handler_register(server, WEB_URL_HELLO, handle_node_info, args);
+    return web_handler_register(server, WEB_URL_NODE_INFO, handle_node_info, args);
 }

@@ -68,8 +68,10 @@ static int api_service_handle(void *p, void *request, void *response)
     ApiNodeInfoRsp *rsp = response;
     VMP_LOGD("req id = %d\n", req->id);
 
+    //char *sname = "server node 01";
     rsp->id     = req->id;
     rsp->count  = 11;
+    strncpy(rsp->name, "server node 01", sizeof(rsp->name));
 
     return 0;
 }

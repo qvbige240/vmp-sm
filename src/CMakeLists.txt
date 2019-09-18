@@ -35,5 +35,8 @@ if (${ZLOG_ENABLED})
 target_link_libraries(smp ${ZLOG_LIBRARIES})
 endif (${ZLOG_ENABLED})
 
+if (${JSON_ENABLED})
+target_link_libraries(smp ${JSON_LIBRARIES})
+endif (${JSON_ENABLED})
 
 install(FILES ${SMM_INCLUDES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )

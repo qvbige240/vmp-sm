@@ -23,6 +23,8 @@ typedef struct _ApiNodeInfoRsp
     unsigned int        id;
 
     unsigned int        count;
+
+    char                name[64];
 } ApiNodeInfoRsp;
 
 

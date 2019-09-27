@@ -18,6 +18,8 @@ smm/smm_core.c
 smm/smm_core.h
 smm/smm_demo.c
 smm/smm_demo.h
+smm/smm_node_info.c
+smm/smm_node_info.h
 smm/smm.h
 smm/smm_typedef.h
 vmp/vmp.h

@@ -18,7 +18,9 @@ typedef struct _PrivInfo
     pthread_mutex_t     core_mutex;
 
     void                *web_server;
+
     void                *web_demo;
+    void                *node_info;
 } PrivInfo;
 
 extern int main_test(int argc, char **argv);
@@ -37,18 +39,32 @@ static void task_web_demo(PrivInfo *thiz)
     }
 }
 
+/** web node info **/
+static void task_web_node_info(PrivInfo *thiz)
+{
+    SmmNodeInfoReq req = {0};
+    req.web_server = thiz->web_server;
+    thiz->node_info = smm_node_info_create(thiz, &req);
+    if (thiz->node_info)
+    {
+        smm_node_info_start(thiz->node_info);
+    }
+}
+
 /** web server **/
 static int api_register_func(void *p, int msg, void *arg)
 {
-    task_web_demo(p);
+    //task_web_demo(p);
+    task_web_node_info(p);
 
     return 0;
 }
+
 static void task_web_server(PrivInfo *thiz)
 {
     VMP_LOGD("web server start...");
     WebServerReq req = {0};
-    req.port = 8080;
+    req.port = 9090;
     req.func = api_register_func;
     req.ctx  = thiz;
     thiz->web_server = web_server_create(thiz, &req);

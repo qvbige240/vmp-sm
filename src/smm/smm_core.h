@@ -11,6 +11,7 @@
 #include "smm_typedef.h"
 
 #include "smm_demo.h"
+#include "smm_node_info.h"
 
 VMP_BEGIN_DELS
 

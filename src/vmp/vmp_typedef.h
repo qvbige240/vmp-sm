@@ -12,6 +12,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "vpk_darray_list.h"
+
 #ifdef HAVE_VPK
 
   #include "vpk/vpk.h"

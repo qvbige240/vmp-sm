@@ -7,9 +7,8 @@
 
 #include "vpk_darray.h"
 
-static void darray_destroy_data(void *ctx, void *data)
+static void darray_destroy_data(vpk_darray_t *thiz, void *data)
 {
-    vpk_darray_t *thiz = ctx;
     if (thiz->destroy)
     {
         thiz->destroy(thiz->ctx, data);

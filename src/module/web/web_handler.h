@@ -13,6 +13,7 @@
 VMP_BEGIN_DELS
 
 #define WEB_URL_HELLO           "carnet/sm/lbs/hello"
+#define WEB_URL_DEMO            "carnet/sm/lbs/demo"
 #define WEB_URL_NODE_INFO       "carnet/sm/lbs/node_info"
 #define WEB_URL_NODE_LIST       "carnet/sm/lbs/node_list"
 

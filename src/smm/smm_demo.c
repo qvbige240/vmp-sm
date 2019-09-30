@@ -64,8 +64,8 @@ typedef struct _PrivInfo
 static int api_service_handle(void *p, void *request, void *response)
 {
     //PrivInfo *thiz = p;
-    ApiNodeInfoReq *req = request;
-    ApiNodeInfoRsp *rsp = response;
+    ApiDemoReq *req = request;
+    ApiDemoRsp *rsp = response;
     VMP_LOGD("req id = %d\n", req->id);
 
     //char *sname = "server node 01";
@@ -76,20 +76,20 @@ static int api_service_handle(void *p, void *request, void *response)
     return 0;
 }
 
-static int web_demo_register(PrivInfo *thiz)
+static int demo_register(PrivInfo *thiz)
 {
     service_handler_t *service = calloc(1, sizeof(service_handler_t));
     service->ctx            = thiz;
     service->pfn_callback   = api_service_handle;
 
-    web_node_info_register(thiz->req.web, service);
+    web_demo_register(thiz->req.web, service);
 
     return 0;
 }
 
 int smm_demo_start(void *p)
 {
-    web_demo_register(p);
+    demo_register(p);
 
     return 0;
 }

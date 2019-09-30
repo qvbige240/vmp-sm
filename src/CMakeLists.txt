@@ -9,9 +9,11 @@ set(SMM_SOURCES
 module/dao/dao_server_node.c
 module/dao/dao_server_node.h
 module/model/model_server.h
+module/web/api/api_demo.h
 module/web/api/api_node_info.h
 module/web/api/api_node_list.h
 module/web/api/api_typedef.h
+module/web/web_demo.c
 module/web/web_handler.h
 module/web/web_node_info.c
 module/web/web_node_list.c

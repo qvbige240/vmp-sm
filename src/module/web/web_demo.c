@@ -14,14 +14,14 @@
 
 #include "jansson.h"
 
-#include "api/api_node_info.h"
+#include "api/api_demo.h"
 #include "web_server.h"
 #include "web_register.h"
 
 typedef struct _PrivInfo
 {
-    ApiNodeInfoReq      req;
-    ApiNodeInfoRsp      rsp;
+    ApiDemoReq          req;
+    ApiDemoRsp          rsp;
 
     char                *path;
 
@@ -66,7 +66,7 @@ static void response_json_create(PrivInfo *thiz)
 #else
 static void response_json_create(PrivInfo *thiz)
 {
-    ApiNodeInfoRsp *rsp = &thiz->rsp;
+    ApiDemoRsp *rsp = &thiz->rsp;
     json_t *json_root = json_object();
 
     json_object_set_new(json_root, "id", json_integer(rsp->id));
@@ -74,7 +74,7 @@ static void response_json_create(PrivInfo *thiz)
     json_object_set_new(json_root, "count", json_integer(rsp->count));
 
     char *data_dump = json_dumps(json_root, 0);
-    VMP_LOGD("response node info:\n%s", data_dump);
+    VMP_LOGD("response api demo:\n%s", data_dump);
 
     thiz->data = calloc(1, strlen(data_dump) + 1);
     if (thiz->data)
@@ -87,9 +87,9 @@ static void response_json_create(PrivInfo *thiz)
 }
 #endif
 
-static int handle_node_info(void *p, onion_request *req, onion_response *res)
+static int handle_demo(void *p, onion_request *req, onion_response *res)
 {
-    // carnet/sm/lbs/node_info
+    // carnet/sm/lbs/demo
     VMP_LOGD("\n========== process uri %s ==========", onion_request_get_fullpath(req));
     printf("query 1: %s\n", onion_request_get_query(req, "1"));
     printf("query 100: %s\n", onion_request_get_query(req, "100"));
@@ -103,7 +103,7 @@ static int handle_node_info(void *p, onion_request *req, onion_response *res)
     if (ret == 0) {
         // callback
     } else {
-        VMP_LOGE("handle_node_info failed!");
+        VMP_LOGE("handle_demo failed!");
     }
 
     service_handler_t *service = (service_handler_t *)p;
@@ -135,7 +135,7 @@ static int handle_node_info(void *p, onion_request *req, onion_response *res)
     return OCS_PROCESSED;
 }
 
-int web_node_info_register(void *server, void *args)
+int web_demo_register(void *server, void *args)
 {
-    return web_handler_register(server, WEB_URL_NODE_INFO, handle_node_info, args);
+    return web_handler_register(server, WEB_URL_DEMO, handle_demo, args);
 }

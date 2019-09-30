@@ -2,13 +2,19 @@
 include_directories (${PROJECT_SOURCE_DIR}/src/) 
 
 include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/vmp)
+include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/module)
 include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/module/web)
 
 set(SMM_SOURCES
+module/dao/dao_server_node.c
+module/dao/dao_server_node.h
+module/model/model_server.h
 module/web/api/api_node_info.h
+module/web/api/api_node_list.h
 module/web/api/api_typedef.h
 module/web/web_handler.h
 module/web/web_node_info.c
+module/web/web_node_list.c
 module/web/web_register.h
 module/web/web_server.c
 module/web/web_server.h
@@ -25,6 +31,12 @@ smm/smm_typedef.h
 vmp/vmp.h
 vmp/vmp_log.h
 vmp/vmp_typedef.h
+vmp/vpk_darray.c
+vmp/vpk_darray.h
+vmp/vpk_darray_list.c
+vmp/vpk_darray_list.h
+vmp/vpk_list.h
+vmp/vpk_typedef.h
 
 )
 

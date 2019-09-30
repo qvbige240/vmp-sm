@@ -15,15 +15,13 @@ VMP_BEGIN_DELS
 
 typedef struct _ApiNodeInfoReq
 {
-    unsigned int        id;
+    unsigned int        index;
 } ApiNodeInfoReq;
 
 typedef struct _ApiNodeInfoRsp
 {
+    unsigned int        index;
     unsigned int        id;
-
-    unsigned int        count;
-
     char                name[64];
     char                system[64];     /* system release type */
     char                location[64];   /* place */

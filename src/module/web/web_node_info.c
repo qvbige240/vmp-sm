@@ -41,10 +41,10 @@ static int query_param_parse(void *p, onion_request *req)
     PrivInfo *thiz = p;
 
     //value = onion_request_get_session(req, "id");
-    value = onion_request_get_query(req, "id");
+    value = onion_request_get_query(req, "index");
     if (!value) goto param_parse_end;
-    thiz->req.id = atoi(value);
-    VMP_LOGD("id: %d", thiz->req.id);
+    thiz->req.index = atoi(value);
+    VMP_LOGD("index: %d", thiz->req.index);
 
     return 0;
 
@@ -69,9 +69,13 @@ static void response_json_create(PrivInfo *thiz)
     ApiNodeInfoRsp *rsp = &thiz->rsp;
     json_t *json_root = json_object();
 
-    json_object_set_new(json_root, "id", json_integer(rsp->id));
+    json_object_set_new(json_root, "index", json_integer(rsp->index));
     json_object_set_new(json_root, "name", json_string(rsp->name));
-    json_object_set_new(json_root, "count", json_integer(rsp->count));
+    json_object_set_new(json_root, "system", json_string(rsp->system));
+    json_object_set_new(json_root, "location", json_string(rsp->location));
+    json_object_set_new(json_root, "processor", json_string(rsp->processor));
+    json_object_set_new(json_root, "bandwidth", json_integer(rsp->bandwidth));
+    json_object_set_new(json_root, "memory", json_integer(rsp->memory));
 
     char *data_dump = json_dumps(json_root, 0);
     VMP_LOGD("response node info:\n%s", data_dump);

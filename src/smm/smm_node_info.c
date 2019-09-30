@@ -18,7 +18,7 @@ typedef struct _PrivInfo
     SmmNodeInfoReq      req;
     SmmNodeInfoRsp      rsp;
 
-    void                *node_table;
+    void                *node_table;        /** stream server nodes **/
 
     int                 cond;
 } PrivInfo;
@@ -152,17 +152,31 @@ static int node_list_register(PrivInfo *thiz)
 /** node info interface **/
 static int api_service_handle(void *p, void *request, void *response)
 {
-    //PrivInfo *thiz = p;
+    int ret = 0;
+    PrivInfo *thiz = p;
     ApiNodeInfoReq *req = request;
     ApiNodeInfoRsp *rsp = response;
-    VMP_LOGD("req id = %d\n", req->id);
+    VMP_LOGD("req index = %d\n", req->index);
 
-    //char *sname = "server node 01";
-    rsp->id = req->id;
-    rsp->count = 11;
-    strncpy(rsp->name, "server node 01", sizeof(rsp->name));
+    EntitySNodeInfo info = {0};
+    ret = dao_snode_get_by_index(thiz->node_table, req->index, &info);
+    if (ret == 0)
+    {
+        rsp->index = info.index;
+        rsp->id = info.id;
+        strncpy(rsp->name, info.name, sizeof(rsp->name));
+        strncpy(rsp->system, info.system, sizeof(rsp->system));
+        strncpy(rsp->location, info.location, sizeof(rsp->location));
+        strncpy(rsp->processor, info.processor, sizeof(rsp->processor));
+        rsp->bandwidth = info.bandwidth;
+        rsp->memory = info.memory;
+    }
+    else
+    {
+        VMP_LOGE("get server node info failed, ret = %d", ret);
+    }
 
-    return 0;
+    return ret;
 }
 
 static int node_info_register(PrivInfo *thiz)

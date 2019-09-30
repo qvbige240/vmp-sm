@@ -25,6 +25,11 @@ typedef struct _ApiNodeInfoRsp
     unsigned int        count;
 
     char                name[64];
+    char                system[64];     /* system release type */
+    char                location[64];   /* place */
+    char                processor[64];  /* cpu model */
+    unsigned long       bandwidth;      /* network */
+    unsigned long       memory;         /* memory total KB */
 } ApiNodeInfoRsp;
 
 

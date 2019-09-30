@@ -56,7 +56,7 @@ static void *web_server_thread(void *arg)
     {
         char port[8] = {0};
         sprintf(port, "%d", thiz->req.port);
-        //onion_set_timeout(thiz->server, 5000);
+        onion_set_timeout(thiz->server, 5000);
         onion_set_hostname(thiz->server, "0.0.0.0");
         onion_set_port(thiz->server, port);
 
@@ -134,7 +134,7 @@ static web_handler_t *web_handler_find(void *p, char *url)
         return -1;
     }
 
-    for (s = thiz->sc_head; s != NULL; s->sc_next)
+    for (s = thiz->sc_head; s != NULL; s = s->sc_next)
     {
         if (strcmp(s->sc_urls, url) == 0)
             break;

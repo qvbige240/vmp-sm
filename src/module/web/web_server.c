@@ -131,7 +131,7 @@ static web_handler_t *web_handler_find(void *p, char *url)
     if (!url)
     {
         VMP_LOGE("null pointer");
-        return -1;
+        return NULL;
     }
 
     for (s = thiz->sc_head; s != NULL; s = s->sc_next)

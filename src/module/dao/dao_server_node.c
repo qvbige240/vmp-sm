@@ -106,6 +106,31 @@ int dao_snode_get_by_index(vpk_dalist_t *list, size_t slot, EntitySNodeInfo *inf
     return ret;
 }
 
+static int server_node_id_compare(void *ctx, void *data)
+{
+    EntitySNodeInfo *info = ctx;
+    da_object_t *object = data;
+    if (object && info)
+    {
+        DECL_PRIV(object, priv);
+        if (priv->info.id == info->id)
+        {
+            memcpy(info, &priv->info, sizeof(EntitySNodeInfo));
+            return 0;
+        }
+    }
+
+    return -1;
+}
+int dao_snode_find_by_id(vpk_dalist_t *list, EntitySNodeInfo *info)
+{
+    int index = 0;
+    index = vpk_dalist_find(list, server_node_id_compare, info);
+    if (index < 0)
+        VMP_LOGE("find server by id failed, ret = %d", index);
+    return index;
+}
+
 void dao_snode_table_destroy(vpk_dalist_t *list)
 {
     vpk_dalist_destroy(list);

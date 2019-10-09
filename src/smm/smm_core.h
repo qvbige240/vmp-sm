@@ -12,6 +12,7 @@
 
 #include "smm_demo.h"
 #include "smm_node_info.h"
+#include "smm_rpc_task.h"
 
 VMP_BEGIN_DELS
 

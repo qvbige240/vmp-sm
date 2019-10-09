@@ -21,11 +21,32 @@ typedef struct _PrivInfo
 
     void                *web_demo;
     void                *node_info;
+    void                *rpc_task;
 } PrivInfo;
 
 extern int main_test(int argc, char **argv);
 
 void smm_core_done(void);
+
+/** rpc task process **/
+static int rpc_callback(void* p, int msg, void* arg)
+{
+    if (msg != 0) {
+        VMP_LOGE("rpc_callback failed");
+        return -1;
+    }
+    return 0;
+}
+static void task_rpc_start(PrivInfo* thiz)
+{
+    SmmRpcTaskReq req = {0};
+    req.ctx     = thiz;
+    req.pfncb   = rpc_callback;
+    thiz->rpc_task = smm_rpc_task_create(thiz, &req);
+    if (thiz->rpc_task) {
+        smm_rpc_task_start(thiz->rpc_task);
+    }
+}
 
 /** web demo **/
 static void task_web_demo(PrivInfo *thiz)
@@ -54,7 +75,7 @@ static void task_web_node_info(PrivInfo *thiz)
 /** web server **/
 static int api_register_func(void *p, int msg, void *arg)
 {
-    //task_web_demo(p);
+    task_web_demo(p);
     task_web_node_info(p);
 
     return 0;
@@ -82,6 +103,7 @@ static void *smm_core_thread(void *arg)
 
     //main_test(0, NULL);
     task_web_server(thiz);
+    task_rpc_start(thiz);
 
     while (thiz->cond)
     {

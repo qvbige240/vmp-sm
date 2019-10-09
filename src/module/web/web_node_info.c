@@ -35,7 +35,7 @@ static void parameter_query(char *uri, const char *key, const char *value)
     printf("===== uri(%s) key, value ( %s %s)\n", uri, key, value);
 }
 
-static int query_param_parse(void *p, onion_request *req)
+static int query_param_parse(void *p, onion_request *req, char **err_msg)
 {
     const char *value;
     PrivInfo *thiz = p;
@@ -50,6 +50,10 @@ static int query_param_parse(void *p, onion_request *req)
 
 param_parse_end:
     VMP_LOGE("\n============ param parse error!!! ============\n");
+    if (err_msg)
+    {
+        *err_msg = "param index valid";
+    }
     return -1;
 }
 
@@ -64,6 +68,26 @@ static void response_json_create(PrivInfo *thiz)
         VMP_LOGE("memory alloc failed: response_json_create");
 }
 #else
+static void response_json_create_failed(PrivInfo *thiz, int code, char *msg)
+{
+    json_t *json_root = json_object();
+
+    json_object_set_new(json_root, "error_code", json_integer(code));
+    //if (msg)
+    json_object_set_new(json_root, "error_msg", json_string(msg));
+
+    char *data_dump = json_dumps(json_root, 0);
+    VMP_LOGD("response node info:\n%s", data_dump);
+
+    thiz->data = calloc(1, strlen(data_dump) + 1);
+    if (thiz->data)
+        strcpy(thiz->data, data_dump);
+    else
+        VMP_LOGE("memory alloc failed: response_json_create");
+
+    free(data_dump);
+    json_decref(json_root);
+}
 static void response_json_create(PrivInfo *thiz)
 {
     ApiNodeInfoRsp *rsp = &thiz->rsp;
@@ -103,20 +127,26 @@ static int handle_node_info(void *p, onion_request *req, onion_response *res)
     PrivInfo *thiz = calloc(1, sizeof(PrivInfo));
     thiz->path = (char *)onion_request_get_fullpath(req);
 
-    int ret = query_param_parse(thiz, req);
+    char *err_msg = NULL;
+    int ret = query_param_parse(thiz, req, &err_msg);
     if (ret == 0) {
         // callback
     } else {
         VMP_LOGE("handle_node_info failed!");
+        response_json_create_failed(thiz, ret, err_msg);
+        goto end;
     }
 
     service_handler_t *service = (service_handler_t *)p;
     ret = service->pfn_callback(service->ctx, &thiz->req, &thiz->rsp);
     if (ret != 0) {
         VMP_LOGE("get response failed");
+        response_json_create_failed(thiz, ret, "index query failed");
+        goto end;
     }
 
     response_json_create(thiz);
+end:
     onion_response_write0(res, thiz->data);
 
     if (0)

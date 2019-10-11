@@ -101,6 +101,12 @@ static void response_json_create(PrivInfo *thiz)
     json_object_set_new(json_root, "bandwidth", json_integer(rsp->bandwidth));
     json_object_set_new(json_root, "memory", json_integer(rsp->memory));
 
+    json_object_set_new(json_root, "count", json_integer(rsp->count));
+    json_object_set_new(json_root, "uplink", json_integer(rsp->uplink));
+    json_object_set_new(json_root, "downlink", json_integer(rsp->downlink));
+    json_object_set_new(json_root, "mem_used", json_integer(rsp->memused));
+    json_object_set_new(json_root, "cpu", json_real(rsp->cpu));
+
     char *data_dump = json_dumps(json_root, 0);
     VMP_LOGD("response node info:\n%s", data_dump);
 

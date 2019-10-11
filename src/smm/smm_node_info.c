@@ -98,6 +98,17 @@ static void test_server_node_add(void *p, int num)
 
         VMP_LOGD("add server id(%d) name(%s)", info.id, info.name);
         memset(&info, 0x00, sizeof(EntitySNodeInfo));
+
+        EntitySNodeState state = {0};
+        state.id = i;
+        state.index = slot;
+        sprintf(state.name, "%s%d", "stream_server", i + 1);
+        state.count = 99;
+        state.uplink = 500;
+        state.downlink = 50;
+        state.memused = (100UL + 10*i) << 20;
+        state.cpu = 30.25;
+        dao_snode_status_modify_by_index(thiz->node_table, slot, &state);
     }
 }
 
@@ -170,6 +181,17 @@ static int api_service_handle(void *p, void *request, void *response)
         strncpy(rsp->processor, info.processor, sizeof(rsp->processor));
         rsp->bandwidth = info.bandwidth;
         rsp->memory = info.memory;
+
+        EntitySNodeState state = {0};
+        ret = dao_snode_status_get_by_index(thiz->node_table, req->index, &state);
+        if (ret == 0)
+        {
+            rsp->count      = state.count;
+            rsp->uplink     = state.uplink;
+            rsp->downlink   = state.downlink;
+            rsp->memused    = state.memused;
+            rsp->cpu        = state.cpu;
+        }
     }
     else
     {

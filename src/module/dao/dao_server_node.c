@@ -10,6 +10,7 @@
 typedef struct _PrivInfo
 {
     EntitySNodeInfo     info;
+    EntitySNodeState    state;
 } PrivInfo;
 
 static int object_destroy(void *ctx, void *data)
@@ -139,4 +140,42 @@ void dao_snode_table_destroy(vpk_dalist_t *list)
 list_t *dao_snode_list_clone(vpk_dalist_t *list)
 {
     return vpk_dalist_clone_list(list, sizeof(da_object_t) + sizeof(PrivInfo));
+}
+
+static int state_modify_cb(void *ctx, void *data)
+{
+    da_object_t *object = data;
+    if (object)
+    {
+        DECL_PRIV(object, priv);
+        memcpy(&priv->state, ctx, sizeof(EntitySNodeState));
+        // strcat(priv->state.name, "modified first");
+        // VMP_LOGD("object  id name memory  slot[%d]( %d %s %lu )",
+        //       object->slot, priv->state.id, priv->state.name, priv->state.memused);
+    }
+    return 0;
+}
+int dao_snode_status_modify_by_index(vpk_dalist_t *list, size_t slot, EntitySNodeState *state)
+{
+    int ret = vpk_dalist_modify_by_index(list, slot, state_modify_cb, state);
+    if (ret != 0)
+        VMP_LOGE("dao_snode_status_modify_by_index failed, slot %d", slot);
+
+    return ret;
+}
+
+int dao_snode_status_get_by_index(vpk_dalist_t *list, size_t slot, EntitySNodeState *state)
+{
+    da_object_t *object = NULL;
+    int ret = vpk_dalist_get_by_index(list, slot, &object);
+    if (ret != 0)
+        VMP_LOGE("vpk_dalist_get_by_index failed, slot %d", slot);
+
+    if (object)
+    {
+        DECL_PRIV(object, priv);
+        memcpy(state, &priv->state, sizeof(EntitySNodeState));
+    }
+
+    return ret;
 }

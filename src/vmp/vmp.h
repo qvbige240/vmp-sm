@@ -9,6 +9,7 @@
 
 #include "vmp_typedef.h"
 #include "vmp_log.h"
+#include "vmp_object.h"
 
 #ifdef __cplusplus
 extern "C" {

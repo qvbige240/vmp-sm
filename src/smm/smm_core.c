@@ -141,6 +141,7 @@ void smm_core_init(void)
 {
     PrivInfo *thiz = calloc(1, sizeof(PrivInfo));
     thiz->cond = 1;
+
     smm_core_start(thiz);
 }
 

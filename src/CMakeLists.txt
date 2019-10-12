@@ -7,9 +7,17 @@ include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/module)
 include_directories (${PROJECT_SOURCE_DIR}/src/smp/src/module/web)
 
 set(SMM_SOURCES
+module/cache/cache.c
+module/cache/cache.h
+module/cache/cache_table.c
+module/cache/cache_table.h
+module/cache/cache_typedef.h
 module/dao/dao_server_node.c
 module/dao/dao_server_node.h
 module/model/model_server.h
+module/module_support.h
+module/support/globals.c
+module/support/globals.h
 module/web/api/api_demo.h
 module/web/api/api_node_info.h
 module/web/api/api_node_list.h
@@ -76,6 +84,7 @@ smm/smm.h
 smm/smm_typedef.h
 vmp/vmp.h
 vmp/vmp_log.h
+vmp/vmp_object.h
 vmp/vmp_typedef.h
 vmp/vpk_darray.c
 vmp/vpk_darray.h

@@ -231,6 +231,12 @@ void *smm_node_info_create(void *parent, SmmNodeInfoReq *req)
         priv->cond          = 1;
         priv->req           = *req;
         priv->node_table    = dao_snode_table_create();
+
+        if(priv->node_table)
+        {
+            vmp_object_t *cache = global_default_cache();
+            cache->pfn_set(cache, CACHE_TABLE_NODE, priv->node_table, 0);
+        }
     }
     return priv;
 }

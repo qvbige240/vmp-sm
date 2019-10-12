@@ -18,6 +18,7 @@ typedef struct _PrivInfo
 
     vmp_rpclnt_t            *client;
 
+
     int                     cond;
 
     pthread_t               thread;
@@ -80,6 +81,22 @@ static int client_node_state_callback(void *p, int msg, void *arg)
     VMP_LOGD(" downlink: %ld", rsp->downlink);
     VMP_LOGD(" memory: %ld", rsp->memory);
     VMP_LOGD(" cpu: %lf", rsp->cpu);
+
+    vmp_object_t *cache = global_default_cache();
+    CacheDataObject data_object = {0};
+    cache->pfn_get(cache, CACHE_TABLE_NODE, &data_object, 0);
+
+    EntitySNodeState state = {0};
+    state.id = rsp->id;
+    state.index = rsp->index;
+    strncpy(state.name, rsp->name, sizeof(state.name));
+    state.count = rsp->count;
+    state.uplink = rsp->uplink;
+    state.downlink = rsp->downlink;
+    state.memused = rsp->memory;
+    state.cpu = rsp->cpu;
+    dao_snode_status_modify_by_index(data_object.data, rsp->id, &state);
+
     return 0;
 }
 static int client_node_state_call(vmp_rpclnt_t *thiz)

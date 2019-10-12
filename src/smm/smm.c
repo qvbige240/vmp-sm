@@ -8,11 +8,14 @@
 #include <unistd.h>
 
 #include "smm.h"
-#include "smm_typedef.h"
 #include "smm_core.h"
 
 void smm_init(int argc, char **argv)
 {
+    vmp_object_t *cache = cache_create(NULL, NULL);
+
+    global_set_cache(cache);
+
     smm_core_init();
 }
 

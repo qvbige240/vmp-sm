@@ -8,7 +8,6 @@
 #ifndef SMM_H
 #define SMM_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -13,9 +13,9 @@
 VMP_BEGIN_DELS
 
 #define WEB_URL_HELLO           "carnet/sm/lbs/hello"
-#define WEB_URL_DEMO            "carnet/sm/lbs/demo"
-#define WEB_URL_NODE_INFO       "carnet/sm/lbs/node_info"
-#define WEB_URL_NODE_LIST       "carnet/sm/lbs/node_list"
+#define WEB_URL_DEMO            "carnet/sm/lbs/demo"    // http://127.0.0.1:9090/carnet/sm/lbs/demo?id=3
+#define WEB_URL_NODE_INFO       "carnet/sm/lbs/node_info" // http://127.0.0.1:9090/carnet/sm/lbs/node_info?index=1
+#define WEB_URL_NODE_LIST       "carnet/sm/lbs/node_list" // http://127.0.0.1:9090/carnet/sm/lbs/node_list
 
 
 typedef struct web_handler_s

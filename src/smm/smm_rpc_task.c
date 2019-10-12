@@ -124,11 +124,11 @@ static void *smm_rpc_task_thread(void *arg)
 
     while (thiz->cond)
     {
-        client_demo_call(thiz->client);
+        //client_demo_call(thiz->client);
 
         client_node_state_call(thiz->client);
 
-        sleep(5);
+        sleep(1);
     }
 
     pthread_exit(0);

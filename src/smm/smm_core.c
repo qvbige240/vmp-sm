@@ -28,7 +28,9 @@ extern int main_test(int argc, char **argv);
 
 void smm_core_done(void);
 
+#ifdef PBC_RPC_ENABLED
 /** rpc task process **/
+#include "smm_rpc_task.h"
 static int rpc_callback(void* p, int msg, void* arg)
 {
     if (msg != 0) {
@@ -47,6 +49,7 @@ static void task_rpc_start(PrivInfo* thiz)
         smm_rpc_task_start(thiz->rpc_task);
     }
 }
+#endif // PBC_RPC_ENABLED
 
 /** web demo **/
 static void task_web_demo(PrivInfo *thiz)
@@ -103,7 +106,11 @@ static void *smm_core_thread(void *arg)
 
     //main_test(0, NULL);
     task_web_server(thiz);
+#ifdef PBC_RPC_ENABLED
     task_rpc_start(thiz);
+#else
+    VMP_LOGD("PBC_RPC_ENABLED is not defined!");
+#endif // PBC_RPC_ENABLED
 
     while (thiz->cond)
     {
